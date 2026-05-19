@@ -99,13 +99,30 @@
     width: 100%;
 }
 
-/* Equal cards: three columns side by side */
-.org-level--equal {
+.org-level--top {
+    max-width: 380px;
+}
+
+/* Asymmetric layout: branches side by side */
+.org-level--asymmetric {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5px;
-    background: var(--teal-border);
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    background: none;
+    border: none;
+    align-items: start;
+}
+
+/* Individual branch column */
+.org-branch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.org-branch > .org-card {
     border: 1px solid var(--teal-border);
+    width: 100%;
 }
 
 /* ── ORG CARD ─────────────────────────────── */
@@ -232,6 +249,42 @@
     margin: 0 auto;
 }
 
+/* ── CONNECTORS (lines between levels) ────── */
+.org-connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    position: relative;
+}
+
+.org-connector-stem {
+    width: 2px;
+    height: 32px;
+    background: linear-gradient(180deg, var(--teal), var(--teal-mid));
+}
+
+.org-connector-branch {
+    width: 50%;
+    height: 2px;
+    background: var(--teal-border);
+    position: relative;
+}
+
+.org-connector-branch::before,
+.org-connector-branch::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 2px;
+    height: 32px;
+    background: linear-gradient(180deg, var(--teal-mid), var(--teal-border));
+}
+
+.org-connector-branch::before { left: 0; }
+.org-connector-branch::after { right: 0; }
+
 
 /* ── CTA SECTION ──────────────────────────── */
 .org-cta-section {
@@ -259,8 +312,21 @@
     .org-section { padding: 4rem 2rem 2rem; }
     .org-cta-section { padding: 4rem 2rem; }
 
-    .org-level--equal {
+    .org-level--top { max-width: 100%; }
+
+    .org-level--asymmetric {
         grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .org-connector-branch {
+        width: 2px;
+        height: 24px;
+    }
+
+    .org-connector-branch::before,
+    .org-connector-branch::after {
+        display: none;
     }
 
     .org-card { padding: 2rem 1.5rem; }
