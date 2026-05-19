@@ -113,12 +113,6 @@
     align-items: start;
 }
 
-/* Three-column variant */
-.org-level--three {
-    grid-template-columns: 1.4fr 0.8fr 1fr;
-    gap: 2rem;
-}
-
 /* Individual branch column */
 .org-branch {
     display: flex;
@@ -291,28 +285,6 @@
 .org-connector-branch::before { left: 0; }
 .org-connector-branch::after { right: 0; }
 
-/* Three-way connector branch */
-.org-connector--three {
-    max-width: 800px;
-}
-
-.org-connector-branch--three {
-    width: 70%;
-}
-
-.org-connector-branch--three::before { left: 0; }
-.org-connector-branch--three::after { right: 0; }
-
-/* Center drop for the three-way connector */
-.org-connector-branch--three .org-connector-drop-center {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 2px;
-    height: 32px;
-    background: linear-gradient(180deg, var(--teal-mid), var(--teal-border));
-}
 
 /* ── CTA SECTION ──────────────────────────── */
 .org-cta-section {
@@ -345,10 +317,6 @@
     .org-level--asymmetric {
         grid-template-columns: 1fr;
         gap: 2rem;
-    }
-
-    .org-level--three {
-        grid-template-columns: 1fr;
     }
 
     .org-connector-branch {
