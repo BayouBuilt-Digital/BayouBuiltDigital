@@ -131,15 +131,6 @@
     width: 100%;
 }
 
-.org-level--bottom {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5px;
-    background: rgba(201,149,42,0.22);
-    border: 1px solid rgba(201,149,42,0.22);
-    width: 100%;
-}
-
 /* ── ORG CARD ─────────────────────────────── */
 .org-card {
     background: var(--surface);
@@ -323,25 +314,6 @@
     background: linear-gradient(180deg, var(--teal-mid), var(--teal-border));
 }
 
-/* Ops connector (inside a branch — no horizontal split needed) */
-.org-connector--ops {
-    max-width: 100%;
-}
-
-.org-connector--ops .org-connector-stem {
-    height: 32px;
-    background: linear-gradient(180deg, var(--teal-border), rgba(201,149,42,0.35));
-}
-
-.org-connector--ops .org-connector-branch {
-    background: rgba(201,149,42,0.3);
-}
-
-.org-connector--ops .org-connector-branch::before,
-.org-connector--ops .org-connector-branch::after {
-    background: linear-gradient(180deg, rgba(201,149,42,0.35), rgba(201,149,42,0.22));
-}
-
 /* ── CTA SECTION ──────────────────────────── */
 .org-cta-section {
     padding: 5rem 4rem;
@@ -376,10 +348,6 @@
     }
 
     .org-level--three {
-        grid-template-columns: 1fr;
-    }
-
-    .org-level--bottom {
         grid-template-columns: 1fr;
     }
 
