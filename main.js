@@ -61,52 +61,58 @@
   });
 })();
 
-// ── FORM SUBMISSION ─────────────────────────
+// ── CONTACT FORM (Web3Forms) ────────────────
 (function () {
-  var container = document.getElementById('contact-form');
-  var link      = document.getElementById('contact-submit-btn');
-  if (!container || !link) return;
+  var form = document.getElementById('contact-form');
+  if (!form || form.tagName !== 'FORM') return;
 
-  var emailTo = 'contact@bayoubuilt-digital.com';
-  var fields  = container.querySelectorAll('input, textarea');
+  var btn    = document.getElementById('contact-submit-btn');
+  var status = document.getElementById('form-status');
 
-  function buildMailto() {
-    var name     = (container.querySelector('#cf-name').value || '').trim();
-    var business = (container.querySelector('#cf-business').value || '').trim();
-    var phone    = (container.querySelector('#cf-phone').value || '').trim();
-    var email    = (container.querySelector('#cf-email').value || '').trim();
-    var message  = (container.querySelector('#cf-message').value || '').trim();
-
-    var subject = 'New Project Inquiry from ' + name + ' — ' + business;
-    var body    = 'Name: ' + name + '\n'
-                + 'Business: ' + business + '\n'
-                + 'Phone: ' + phone + '\n'
-                + 'Email: ' + email + '\n\n'
-                + message;
-
-    link.href = 'mailto:' + emailTo
-      + '?subject=' + encodeURIComponent(subject)
-      + '&body='    + encodeURIComponent(body);
+  function setStatus(msg, ok) {
+    if (!status) return;
+    status.textContent = msg;
+    status.hidden = false;
+    status.classList.remove('form-status--success', 'form-status--error');
+    status.classList.add(ok ? 'form-status--success' : 'form-status--error');
   }
 
-  // Rebuild mailto href as user types
-  fields.forEach(function (field) {
-    field.addEventListener('input', buildMailto);
-  });
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
 
-  // Validate before navigating
-  link.addEventListener('click', function (e) {
-    var valid = true;
-    fields.forEach(function (field) {
-      if (!field.value.trim()) {
-        field.classList.add('form-input--error');
-        valid = false;
-      } else {
-        field.classList.remove('form-input--error');
-      }
-    });
-    if (!valid) {
-      e.preventDefault();
+    // Native HTML5 validation — move focus to the first invalid field.
+    if (!form.checkValidity()) {
+      var firstInvalid = form.querySelector(':invalid');
+      if (firstInvalid && typeof firstInvalid.focus === 'function') firstInvalid.focus();
+      setStatus('Please complete every field with a valid email and phone number.', false);
+      return;
     }
+
+    var originalLabel = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    if (status) status.hidden = true;
+
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: new FormData(form)
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (data && data.success) {
+          form.reset();
+          setStatus("Thanks! Your message is on its way — we'll be in touch within one business day.", true);
+        } else {
+          setStatus((data && data.message) || 'Something went wrong. Please email contact@bayoubuilt-digital.com instead.', false);
+        }
+      })
+      .catch(function () {
+        setStatus('Network error — please email contact@bayoubuilt-digital.com instead.', false);
+      })
+      .finally(function () {
+        btn.disabled = false;
+        btn.textContent = originalLabel;
+      });
   });
 })();
