@@ -1273,6 +1273,30 @@ nav {
     padding: 0.25rem 0.85rem;
 }
 
+.reviews-cta {
+    max-width: 680px;
+    margin: 2.5rem auto 0;
+    padding: 3rem 2.5rem;
+    background: var(--surface);
+    border: 1px solid var(--teal-border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.75rem;
+}
+
+.reviews-cta-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--muted);
+    margin: 0;
+}
+
+.reviews-cta-btn {
+    align-self: center;
+}
+
 .reviews-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1445,6 +1469,27 @@ nav {
 .form-textarea {
     resize: vertical;
     min-height: 130px;
+}
+
+.form-status {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-top: 1rem;
+    padding: 0.85rem 1.1rem;
+    border: 1px solid transparent;
+}
+
+.form-status--success {
+    color: var(--teal);
+    border-color: var(--teal-border);
+    background: rgba(0, 214, 143, 0.08);
+}
+
+.form-status--error {
+    color: #f5a3a3;
+    border-color: rgba(231, 76, 60, 0.5);
+    background: rgba(231, 76, 60, 0.08);
 }
 
 /* ============================================
@@ -1927,4 +1972,29 @@ footer {
     .hero-cta { flex-direction: column; align-items: center; }
 
     footer { padding: 2rem 1.5rem; }
+}
+
+/* ============================================
+   REDUCED MOTION — respect user preference.
+   Disables the infinite glow/aura/gradient loops,
+   reveal animations, and smooth scrolling for
+   users who ask for less motion.
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    /* Ensure reveal-on-load elements settle visible, not stuck at opacity:0 */
+    [class*="fade"],
+    .hero-headline span,
+    .reveal {
+        opacity: 1 !important;
+        transform: none !important;
+    }
 }
