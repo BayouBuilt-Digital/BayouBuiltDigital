@@ -9,546 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,700;1,800;1,900&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
-  <style>
-    /* ── BRAND VARIABLES ──────────────────────── */
-    :root {
-      --black:        #050c08;
-      --surface:      #0d1f14;
-      --surface-2:    #132a1a;
-      --surface-3:    #17301e;
-      --teal:         #00d68f;
-      --teal-mid:     rgba(0, 214, 143, 0.35);
-      --teal-faint:   rgba(0, 214, 143, 0.07);
-      --teal-border:  rgba(0, 214, 143, 0.22);
-      --gold:         #c9952a;
-      --cream:        #f0ede6;
-      --muted:        rgba(240, 237, 230, 0.72);
-      --muted-dim:    rgba(240, 237, 230, 0.55);
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--black);
-      color: var(--cream);
-      font-family: 'Inter', sans-serif;
-      font-weight: 400;
-      line-height: 1.7;
-      padding: 0;
-    }
-
-    /* ── PAGE LAYOUT ──────────────────────────── */
-    .brand-header {
-      padding: 4rem 4rem 3rem;
-      border-bottom: 1px solid var(--teal-border);
-      text-align: center;
-      background:
-        radial-gradient(ellipse 70% 55% at 60% -10%, rgba(0,214,143,0.18) 0%, transparent 55%),
-        linear-gradient(170deg, #071009 0%, #050c08 45%, #091209 100%);
-    }
-
-    .brand-header h1 {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 2.4rem;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: -0.01em;
-      margin-bottom: 0.5rem;
-    }
-
-    .brand-header h1 span {
-      background: linear-gradient(135deg, var(--teal), var(--gold));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .brand-header p {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.6rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--muted-dim);
-    }
-
-    .brand-section {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 4rem;
-      border-bottom: 1px solid rgba(0,214,143,0.08);
-    }
-
-    .brand-section:last-child { border-bottom: none; }
-
-    .brand-section-label {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.6rem;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--teal);
-      margin-bottom: 0.75rem;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .brand-section-label::before {
-      content: '';
-      display: block;
-      width: 28px;
-      height: 1px;
-      background: var(--teal);
-    }
-
-    .brand-section-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.8rem;
-      font-weight: 800;
-      margin-bottom: 2rem;
-      color: var(--cream);
-    }
-
-    .brand-note {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.82rem;
-      line-height: 1.8;
-      color: var(--muted-dim);
-      max-width: 600px;
-      margin-bottom: 2.5rem;
-    }
-
-    /* ── COLOR SWATCHES ───────────────────────── */
-    .swatch-group {
-      margin-bottom: 3rem;
-    }
-
-    .swatch-group-title {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.56rem;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 1.25rem;
-    }
-
-    .swatch-row {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 1px;
-      background: var(--teal-border);
-      border: 1px solid var(--teal-border);
-    }
-
-    .swatch {
-      padding: 0;
-      background: var(--surface);
-    }
-
-    .swatch-color {
-      height: 80px;
-      position: relative;
-    }
-
-    .swatch-info {
-      padding: 1rem 1.25rem;
-    }
-
-    .swatch-name {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: var(--cream);
-      margin-bottom: 0.25rem;
-    }
-
-    .swatch-var {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.52rem;
-      color: var(--teal);
-      letter-spacing: 0.05em;
-      margin-bottom: 0.15rem;
-    }
-
-    .swatch-hex {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.52rem;
-      color: var(--muted-dim);
-      letter-spacing: 0.05em;
-    }
-
-    /* ── GRADIENT SAMPLES ─────────────────────── */
-    .gradient-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-      margin-top: 1.5rem;
-    }
-
-    .gradient-card {
-      border: 1px solid var(--teal-border);
-      overflow: hidden;
-    }
-
-    .gradient-preview {
-      height: 60px;
-    }
-
-    .gradient-info {
-      padding: 1rem 1.25rem;
-      background: var(--surface);
-    }
-
-    .gradient-name {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: var(--cream);
-      margin-bottom: 0.25rem;
-    }
-
-    .gradient-css {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.48rem;
-      color: var(--muted-dim);
-      letter-spacing: 0.02em;
-      line-height: 1.6;
-    }
-
-    /* ── TYPOGRAPHY SAMPLES ───────────────────── */
-    .type-sample {
-      border: 1px solid var(--teal-border);
-      background: var(--surface);
-      padding: 2.5rem 2rem;
-      margin-bottom: 1.5rem;
-      position: relative;
-    }
-
-    .type-meta {
-      display: flex;
-      gap: 1.5rem;
-      flex-wrap: wrap;
-      margin-bottom: 1.5rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid rgba(0,214,143,0.08);
-    }
-
-    .type-meta-item {
-      display: flex;
-      flex-direction: column;
-      gap: 0.15rem;
-    }
-
-    .type-meta-label {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.48rem;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--teal);
-    }
-
-    .type-meta-value {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.56rem;
-      color: var(--muted-dim);
-    }
-
-    .type-preview-display {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 900;
-      font-size: 3rem;
-      line-height: 1.1;
-      text-transform: uppercase;
-      color: var(--cream);
-      margin-bottom: 0.5rem;
-    }
-
-    .type-preview-display em {
-      font-style: italic;
-      background: linear-gradient(135deg, var(--teal), var(--gold));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .type-preview-sub {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 800;
-      font-size: 1.6rem;
-      line-height: 1.2;
-      color: var(--cream);
-    }
-
-    .type-preview-sub em {
-      font-style: italic;
-      background: linear-gradient(135deg, var(--teal), var(--gold));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .type-preview-body {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.95rem;
-      line-height: 1.9;
-      color: var(--muted);
-      max-width: 580px;
-    }
-
-    .type-preview-label {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.62rem;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--teal);
-    }
-
-    .type-preview-label::before {
-      content: '';
-      display: inline-block;
-      width: 28px;
-      height: 1px;
-      background: var(--teal);
-      margin-right: 0.75rem;
-      vertical-align: middle;
-    }
-
-    .type-preview-mono {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.8rem;
-      color: var(--cream);
-      line-height: 1.6;
-    }
-
-    /* ── FONT WEIGHT TABLE ────────────────────── */
-    .weight-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 1px;
-      background: var(--teal-border);
-      border: 1px solid var(--teal-border);
-      margin-top: 1.5rem;
-    }
-
-    .weight-cell {
-      background: var(--surface);
-      padding: 1.5rem 1.25rem;
-    }
-
-    .weight-preview {
-      font-size: 1.4rem;
-      color: var(--cream);
-      margin-bottom: 0.5rem;
-      line-height: 1.3;
-    }
-
-    .weight-label {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.5rem;
-      color: var(--muted-dim);
-      letter-spacing: 0.1em;
-    }
-
-    /* ── BUTTON SAMPLES ───────────────────────── */
-    .button-row {
-      display: flex;
-      gap: 1.5rem;
-      flex-wrap: wrap;
-      align-items: center;
-      margin-bottom: 2rem;
-    }
-
-    .btn {
-      display: inline-block;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      text-decoration: none;
-      color: var(--black);
-      background: var(--teal);
-      border: 2px solid var(--teal);
-      padding: 0.9rem 2.2rem;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s, transform 0.15s;
-    }
-
-    .btn:hover {
-      background: transparent;
-      color: var(--teal);
-      transform: translateY(-2px);
-    }
-
-    .btn--ghost {
-      background: transparent;
-      color: var(--cream);
-      border-color: rgba(240, 237, 230, 0.25);
-    }
-
-    .btn--ghost:hover {
-      border-color: var(--teal);
-      color: var(--teal);
-      background: transparent;
-    }
-
-    .btn-spec {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.5rem;
-      color: var(--muted-dim);
-      letter-spacing: 0.05em;
-      margin-top: 0.75rem;
-    }
-
-    /* ── CARD SAMPLES ─────────────────────────── */
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.5px;
-      background: var(--teal-border);
-      border: 1px solid var(--teal-border);
-    }
-
-    .card-sample {
-      background: var(--surface);
-      padding: 2.5rem 2rem;
-      transition: background 0.2s;
-      position: relative;
-    }
-
-    .card-sample::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--teal), var(--gold));
-      opacity: 0;
-      transition: opacity 0.25s;
-    }
-
-    .card-sample:hover { background: var(--surface-2); }
-    .card-sample:hover::before { opacity: 1; }
-
-    .card-sample-num {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 2.2rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, var(--teal), var(--gold));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 1rem;
-    }
-
-    .card-sample h3 {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.15rem;
-      font-weight: 800;
-      color: var(--cream);
-      margin-bottom: 0.75rem;
-    }
-
-    .card-sample p {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.82rem;
-      line-height: 1.85;
-      color: var(--muted);
-    }
-
-    /* ── SPACING REFERENCE ────────────────────── */
-    .spacing-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 1.5rem;
-      margin-top: 1rem;
-    }
-
-    .spacing-item {
-      text-align: center;
-    }
-
-    .spacing-bar {
-      height: 8px;
-      background: var(--teal);
-      margin-bottom: 0.75rem;
-      border-radius: 1px;
-    }
-
-    .spacing-value {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.6rem;
-      font-weight: 700;
-      color: var(--cream);
-      margin-bottom: 0.15rem;
-    }
-
-    .spacing-use {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.56rem;
-      color: var(--muted-dim);
-    }
-
-    /* ── LOGO SECTION ─────────────────────────── */
-    .logo-samples {
-      display: flex;
-      gap: 3rem;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .logo-sample {
-      border: 1px solid var(--teal-border);
-      padding: 2rem 2.5rem;
-      background: var(--surface);
-      text-align: center;
-    }
-
-    .logo-sample--dark { background: var(--black); }
-
-    .logo-text {
-      font-family: 'Space Mono', monospace;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      text-decoration: none;
-      color: var(--cream);
-    }
-
-    .logo-text span { color: var(--teal); }
-
-    .logo-text--lg { font-size: 1.2rem; }
-    .logo-text--md { font-size: 0.72rem; }
-    .logo-text--sm { font-size: 0.55rem; }
-
-    .logo-label {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.48rem;
-      color: var(--muted-dim);
-      letter-spacing: 0.1em;
-      margin-top: 0.75rem;
-    }
-
-    /* ── RESPONSIVE ───────────────────────────── */
-    @media (max-width: 768px) {
-      .brand-header { padding: 3rem 2rem 2.5rem; }
-      .brand-section { padding: 3rem 2rem; }
-      .swatch-row { grid-template-columns: repeat(2, 1fr); }
-      .gradient-row { grid-template-columns: 1fr; }
-      .card-grid { grid-template-columns: 1fr; }
-      .weight-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-
-    @media (max-width: 480px) {
-      .brand-header { padding: 2.5rem 1.5rem 2rem; }
-      .brand-section { padding: 2.5rem 1.5rem; }
-      .swatch-row { grid-template-columns: 1fr; }
-      .logo-samples { gap: 1.5rem; }
-    }
-  </style>
+  <link rel="stylesheet" href="brand-template.css" />
 </head>
 <body>
 
@@ -571,9 +32,9 @@
         <div class="logo-text logo-text--lg">BayouBuilt <span>Digital</span></div>
         <div class="logo-label">Primary &mdash; on dark</div>
       </div>
-      <div class="logo-sample" style="background: var(--cream);">
-        <div class="logo-text logo-text--lg" style="color: var(--black);">BayouBuilt <span>Digital</span></div>
-        <div class="logo-label" style="color: var(--black);">Primary &mdash; on light</div>
+      <div class="logo-sample logo-sample--light">
+        <div class="logo-text logo-text--lg on-light">BayouBuilt <span>Digital</span></div>
+        <div class="logo-label on-light">Primary &mdash; on light</div>
       </div>
       <div class="logo-sample logo-sample--dark">
         <div class="logo-text logo-text--md">BayouBuilt <span>Digital</span></div>
@@ -598,7 +59,7 @@
       <div class="swatch-group-title">Primary</div>
       <div class="swatch-row">
         <div class="swatch">
-          <div class="swatch-color" style="background: #00d68f;"></div>
+          <div class="swatch-color swatch-color--teal"></div>
           <div class="swatch-info">
             <div class="swatch-name">Teal</div>
             <div class="swatch-var">--teal</div>
@@ -606,7 +67,7 @@
           </div>
         </div>
         <div class="swatch">
-          <div class="swatch-color" style="background: #c9952a;"></div>
+          <div class="swatch-color swatch-color--gold"></div>
           <div class="swatch-info">
             <div class="swatch-name">Gold</div>
             <div class="swatch-var">--gold</div>
@@ -614,7 +75,7 @@
           </div>
         </div>
         <div class="swatch">
-          <div class="swatch-color" style="background: #f0ede6;"></div>
+          <div class="swatch-color swatch-color--cream"></div>
           <div class="swatch-info">
             <div class="swatch-name">Cream</div>
             <div class="swatch-var">--cream</div>
@@ -629,7 +90,7 @@
       <div class="swatch-group-title">Backgrounds &amp; Surfaces</div>
       <div class="swatch-row">
         <div class="swatch">
-          <div class="swatch-color" style="background: #050c08; border-bottom: 1px solid rgba(240,237,230,0.1);"></div>
+          <div class="swatch-color swatch-color--black"></div>
           <div class="swatch-info">
             <div class="swatch-name">Black (Base)</div>
             <div class="swatch-var">--black</div>
@@ -637,7 +98,7 @@
           </div>
         </div>
         <div class="swatch">
-          <div class="swatch-color" style="background: #0d1f14;"></div>
+          <div class="swatch-color swatch-color--surface"></div>
           <div class="swatch-info">
             <div class="swatch-name">Surface</div>
             <div class="swatch-var">--surface</div>
@@ -645,7 +106,7 @@
           </div>
         </div>
         <div class="swatch">
-          <div class="swatch-color" style="background: #132a1a;"></div>
+          <div class="swatch-color swatch-color--surface-2"></div>
           <div class="swatch-info">
             <div class="swatch-name">Surface 2</div>
             <div class="swatch-var">--surface-2</div>
@@ -653,7 +114,7 @@
           </div>
         </div>
         <div class="swatch">
-          <div class="swatch-color" style="background: #17301e;"></div>
+          <div class="swatch-color swatch-color--surface-3"></div>
           <div class="swatch-info">
             <div class="swatch-name">Surface 3</div>
             <div class="swatch-var">--surface-3</div>
@@ -668,7 +129,7 @@
       <div class="swatch-group-title">Teal Variants</div>
       <div class="swatch-row">
         <div class="swatch">
-          <div class="swatch-color" style="background: rgba(0, 214, 143, 0.35);"></div>
+          <div class="swatch-color swatch-color--teal-mid"></div>
           <div class="swatch-info">
             <div class="swatch-name">Teal Mid</div>
             <div class="swatch-var">--teal-mid</div>
@@ -676,7 +137,7 @@
           </div>
         </div>
         <div class="swatch">
-          <div class="swatch-color" style="background: rgba(0, 214, 143, 0.22);"></div>
+          <div class="swatch-color swatch-color--teal-border"></div>
           <div class="swatch-info">
             <div class="swatch-name">Teal Border</div>
             <div class="swatch-var">--teal-border</div>
@@ -684,7 +145,7 @@
           </div>
         </div>
         <div class="swatch">
-          <div class="swatch-color" style="background: rgba(0, 214, 143, 0.07);"></div>
+          <div class="swatch-color swatch-color--teal-faint"></div>
           <div class="swatch-info">
             <div class="swatch-name">Teal Faint</div>
             <div class="swatch-var">--teal-faint</div>
@@ -699,7 +160,7 @@
       <div class="swatch-group-title">Text</div>
       <div class="swatch-row">
         <div class="swatch">
-          <div class="swatch-color" style="background: #f0ede6;"></div>
+          <div class="swatch-color swatch-color--cream"></div>
           <div class="swatch-info">
             <div class="swatch-name">Primary Text</div>
             <div class="swatch-var">--cream</div>
@@ -707,7 +168,7 @@
           </div>
         </div>
         <div class="swatch">
-          <div class="swatch-color" style="background: rgba(240, 237, 230, 0.72);"></div>
+          <div class="swatch-color swatch-color--muted"></div>
           <div class="swatch-info">
             <div class="swatch-name">Muted Text</div>
             <div class="swatch-var">--muted</div>
@@ -715,7 +176,7 @@
           </div>
         </div>
         <div class="swatch">
-          <div class="swatch-color" style="background: rgba(240, 237, 230, 0.55);"></div>
+          <div class="swatch-color swatch-color--muted-dim"></div>
           <div class="swatch-info">
             <div class="swatch-name">Dim Text</div>
             <div class="swatch-var">--muted-dim</div>
@@ -730,28 +191,28 @@
       <div class="swatch-group-title">Gradients</div>
       <div class="gradient-row">
         <div class="gradient-card">
-          <div class="gradient-preview" style="background: linear-gradient(135deg, #00d68f, #c9952a);"></div>
+          <div class="gradient-preview gradient-preview--brand"></div>
           <div class="gradient-info">
             <div class="gradient-name">Teal to Gold</div>
             <div class="gradient-css">linear-gradient(135deg, var(--teal), var(--gold))</div>
           </div>
         </div>
         <div class="gradient-card">
-          <div class="gradient-preview" style="background: linear-gradient(90deg, #00d68f 0%, #00ffb3 50%, #c9952a 100%);"></div>
+          <div class="gradient-preview gradient-preview--spectrum"></div>
           <div class="gradient-info">
             <div class="gradient-name">Teal &rarr; Bright &rarr; Gold</div>
             <div class="gradient-css">linear-gradient(90deg, #00d68f 0%, #00ffb3 50%, #c9952a 100%)</div>
           </div>
         </div>
         <div class="gradient-card">
-          <div class="gradient-preview" style="background: linear-gradient(90deg, #00d68f, #c9952a);"></div>
+          <div class="gradient-preview gradient-preview--accent"></div>
           <div class="gradient-info">
             <div class="gradient-name">Accent Bar (top-of-card)</div>
             <div class="gradient-css">linear-gradient(90deg, var(--teal), var(--gold))</div>
           </div>
         </div>
         <div class="gradient-card">
-          <div class="gradient-preview" style="background: linear-gradient(170deg, #071009 0%, #050c08 45%, #091209 100%);"></div>
+          <div class="gradient-preview gradient-preview--hero"></div>
           <div class="gradient-info">
             <div class="gradient-name">Hero Background</div>
             <div class="gradient-css">linear-gradient(170deg, #071009 0%, #050c08 45%, #091209 100%)</div>
@@ -792,19 +253,19 @@
 
       <div class="weight-grid">
         <div class="weight-cell">
-          <div class="weight-preview" style="font-family: 'Barlow Condensed'; font-weight: 700;">Bayou Built</div>
+          <div class="weight-preview weight-preview--barlow-700">Bayou Built</div>
           <div class="weight-label">Bold &mdash; 700</div>
         </div>
         <div class="weight-cell">
-          <div class="weight-preview" style="font-family: 'Barlow Condensed'; font-weight: 800;">Bayou Built</div>
+          <div class="weight-preview weight-preview--barlow-800">Bayou Built</div>
           <div class="weight-label">ExtraBold &mdash; 800</div>
         </div>
         <div class="weight-cell">
-          <div class="weight-preview" style="font-family: 'Barlow Condensed'; font-weight: 900;">Bayou Built</div>
+          <div class="weight-preview weight-preview--barlow-900">Bayou Built</div>
           <div class="weight-label">Black &mdash; 900</div>
         </div>
         <div class="weight-cell">
-          <div class="weight-preview" style="font-family: 'Barlow Condensed'; font-weight: 900; font-style: italic;">Bayou Built</div>
+          <div class="weight-preview weight-preview--barlow-900-italic">Bayou Built</div>
           <div class="weight-label">Black Italic &mdash; 900i</div>
         </div>
       </div>
@@ -834,19 +295,19 @@
 
       <div class="weight-grid">
         <div class="weight-cell">
-          <div class="weight-preview" style="font-family: 'Inter'; font-weight: 300;">Custom websites for local business</div>
+          <div class="weight-preview weight-preview--inter-300">Custom websites for local business</div>
           <div class="weight-label">Light &mdash; 300</div>
         </div>
         <div class="weight-cell">
-          <div class="weight-preview" style="font-family: 'Inter'; font-weight: 400;">Custom websites for local business</div>
+          <div class="weight-preview weight-preview--inter-400">Custom websites for local business</div>
           <div class="weight-label">Regular &mdash; 400</div>
         </div>
         <div class="weight-cell">
-          <div class="weight-preview" style="font-family: 'Inter'; font-weight: 500;">Custom websites for local business</div>
+          <div class="weight-preview weight-preview--inter-500">Custom websites for local business</div>
           <div class="weight-label">Medium &mdash; 500</div>
         </div>
         <div class="weight-cell">
-          <div class="weight-preview" style="font-family: 'Inter'; font-weight: 600;">Custom websites for local business</div>
+          <div class="weight-preview weight-preview--inter-600">Custom websites for local business</div>
           <div class="weight-label">SemiBold &mdash; 600</div>
         </div>
       </div>
@@ -874,7 +335,7 @@
       </div>
       <div class="type-preview-label">BayouBuilt Digital &nbsp;&middot;&nbsp; South Louisiana</div>
       <br />
-      <div class="type-preview-mono" style="margin-top: 1rem;">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>abcdefghijklmnopqrstuvwxyz<br>0123456789 &amp; @ # $ %</div>
+      <div class="type-preview-mono type-preview-mono--mt">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>abcdefghijklmnopqrstuvwxyz<br>0123456789 &amp; @ # $ %</div>
     </div>
 
     <!-- Type Scale Reference -->
@@ -885,33 +346,33 @@
           <span class="type-meta-value">Type Scale</span>
         </div>
       </div>
-      <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+      <div class="type-scale-list">
         <div>
-          <div style="font-family: 'Barlow Condensed'; font-weight: 900; font-size: clamp(2.5rem, 7vw, 6rem); line-height: 1; text-transform: uppercase; color: var(--cream);">Hero</div>
+          <div class="type-scale-sample--hero">Hero</div>
           <div class="weight-label">clamp(2.5rem, 7vw, 6rem) &middot; Barlow 900 &middot; uppercase</div>
         </div>
         <div>
-          <div style="font-family: 'Barlow Condensed'; font-weight: 800; font-size: clamp(1.6rem, 3vw, 2.4rem); line-height: 1.2; color: var(--cream);">Section Title</div>
+          <div class="type-scale-sample--section">Section Title</div>
           <div class="weight-label">clamp(1.6rem, 3vw, 2.4rem) &middot; Barlow 800</div>
         </div>
         <div>
-          <div style="font-family: 'Barlow Condensed'; font-weight: 800; font-size: 1.15rem; color: var(--cream);">Card Heading</div>
+          <div class="type-scale-sample--card">Card Heading</div>
           <div class="weight-label">1.15rem &middot; Barlow 800</div>
         </div>
         <div>
-          <div style="font-family: 'Inter'; font-size: 0.95rem; line-height: 1.9; color: var(--muted);">Body text and descriptions</div>
+          <div class="type-scale-sample--body">Body text and descriptions</div>
           <div class="weight-label">0.95rem &middot; Inter 400 &middot; line-height 1.9</div>
         </div>
         <div>
-          <div style="font-family: 'Inter'; font-size: 0.82rem; line-height: 1.85; color: var(--muted);">Card body text and bios</div>
+          <div class="type-scale-sample--body-sm">Card body text and bios</div>
           <div class="weight-label">0.82rem &middot; Inter 400 &middot; line-height 1.85</div>
         </div>
         <div>
-          <div style="font-family: 'Space Mono'; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal);">Section Label</div>
+          <div class="type-scale-sample--label">Section Label</div>
           <div class="weight-label">0.62rem &middot; Space Mono 700 &middot; tracking 0.18em</div>
         </div>
         <div>
-          <div style="font-family: 'Space Mono'; font-size: 0.6rem; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted-dim);">Nav Links</div>
+          <div class="type-scale-sample--nav">Nav Links</div>
           <div class="weight-label">0.6rem &middot; Space Mono 400 &middot; tracking 0.12em</div>
         </div>
       </div>
@@ -975,32 +436,32 @@
 
     <div class="spacing-grid">
       <div class="spacing-item">
-        <div class="spacing-bar" style="width: 25%;"></div>
+        <div class="spacing-bar spacing-bar--25"></div>
         <div class="spacing-value">0.75rem</div>
         <div class="spacing-use">Tight gaps</div>
       </div>
       <div class="spacing-item">
-        <div class="spacing-bar" style="width: 35%;"></div>
+        <div class="spacing-bar spacing-bar--35"></div>
         <div class="spacing-value">1.25rem</div>
         <div class="spacing-use">Element margins</div>
       </div>
       <div class="spacing-item">
-        <div class="spacing-bar" style="width: 50%;"></div>
+        <div class="spacing-bar spacing-bar--50"></div>
         <div class="spacing-value">2.5rem</div>
         <div class="spacing-use">Card padding</div>
       </div>
       <div class="spacing-item">
-        <div class="spacing-bar" style="width: 65%;"></div>
+        <div class="spacing-bar spacing-bar--65"></div>
         <div class="spacing-value">3.5rem</div>
         <div class="spacing-use">Section gaps</div>
       </div>
       <div class="spacing-item">
-        <div class="spacing-bar" style="width: 80%;"></div>
+        <div class="spacing-bar spacing-bar--80"></div>
         <div class="spacing-value">5rem</div>
         <div class="spacing-use">Section padding (mobile)</div>
       </div>
       <div class="spacing-item">
-        <div class="spacing-bar" style="width: 100%;"></div>
+        <div class="spacing-bar spacing-bar--100"></div>
         <div class="spacing-value">7rem</div>
         <div class="spacing-use">Section padding (desktop)</div>
       </div>
