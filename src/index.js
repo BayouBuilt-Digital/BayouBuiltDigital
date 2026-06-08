@@ -27,22 +27,38 @@ app.use('*', async (c, next) => {
   await next();
 });
 
-/** Redirect to /login if there is no valid session. Uses getUser() which
+/** Resolve the current user (or null) without redirecting. getUser()
  *  revalidates the JWT with Supabase rather than trusting the cookie blindly. */
+async function currentUser(c) {
+  const { data: { user } } = await c.get('supabase').auth.getUser();
+  return user ?? null;
+}
+
+/** Redirect to /login if there is no valid session. */
 async function requireAuth(c, next) {
-  const supabase = c.get('supabase');
-  const { data: { user }, error } = await supabase.auth.getUser();
-  if (error || !user) return c.redirect('/login');
+  const user = await currentUser(c);
+  if (!user) return c.redirect('/login');
   c.set('user', user);
   await next();
 }
 
-// ── Auth pages (GET) ────────────────────────────────────────────────
-app.get('/login', (c) =>
-  c.html(loginPage({ error: c.req.query('error'), msg: c.req.query('msg') })),
-);
+// Lightweight auth-state probe for the navbar (Sign In ↔ Profile). Never
+// redirects; always 200 JSON so it works from static pages.
+app.get('/api/session', async (c) => {
+  const user = await currentUser(c);
+  return c.json({ authenticated: !!user, email: user?.email ?? null });
+});
 
-app.get('/signup', (c) => c.html(signupPage({ error: c.req.query('error') })));
+// ── Auth pages (GET) ────────────────────────────────────────────────
+app.get('/login', async (c) => {
+  if (await currentUser(c)) return c.redirect('/dashboard');
+  return c.html(loginPage({ error: c.req.query('error'), msg: c.req.query('msg') }));
+});
+
+app.get('/signup', async (c) => {
+  if (await currentUser(c)) return c.redirect('/dashboard');
+  return c.html(signupPage({ error: c.req.query('error') }));
+});
 
 // ── Auth actions (POST) ─────────────────────────────────────────────
 app.post('/api/auth/signup', async (c) => {

@@ -124,3 +124,8 @@
   color: var(--muted-dim, rgba(240, 237, 230, 0.55));
 }
 .account-list dd { color: var(--cream, #f0ede6); font-size: 0.95rem; text-align: right; }
+
+/* Profile page (full-chrome) account panel */
+.account-wrap { max-width: 720px; }
+.account-wrap .auth-card + .auth-card { margin-top: 1.5rem; }
+.account-wrap .auth-card .auth-title { font-size: 1.5rem; }

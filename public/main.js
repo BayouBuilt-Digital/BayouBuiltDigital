@@ -24,27 +24,41 @@
   });
 })();
 
-// ── ACTIVE NAV HIGHLIGHTING ON SCROLL ───────
+// ── ACTIVE NAV HIGHLIGHTING (by page path) ──
 (function () {
-  var sections = document.querySelectorAll('section[id], .services-bg[id], .contact-bg[id]');
   var navLinks = document.querySelectorAll('.nav-links a');
-  if (!sections.length || !navLinks.length) return;
+  if (!navLinks.length) return;
 
-  function updateActive() {
-    var scrollY = window.scrollY + 120;
-    var current = '';
-    sections.forEach(function (section) {
-      if (section.offsetTop <= scrollY) {
-        current = section.getAttribute('id');
-      }
-    });
-    navLinks.forEach(function (link) {
-      link.classList.toggle('active', link.getAttribute('href') === '#' + current);
-    });
+  // Normalize a path: strip trailing slash and ".html", treat "" as "/".
+  function norm(p) {
+    p = (p || '/').split('?')[0].split('#')[0];
+    p = p.replace(/\.html$/, '').replace(/\/+$/, '');
+    return p === '' ? '/' : p;
   }
 
-  window.addEventListener('scroll', updateActive, { passive: true });
-  updateActive();
+  var here = norm(window.location.pathname);
+  navLinks.forEach(function (link) {
+    var href = norm(link.getAttribute('href'));
+    if (href !== '/' && here === href) link.classList.add('active');
+  });
+})();
+
+// ── AUTH-AWARE NAV (Sign In ↔ Profile) ──────
+// Progressive enhancement: ask the Worker who we are; if signed in, turn the
+// "Sign In" link into "Profile". Fails silently when offline / not configured.
+(function () {
+  var link = document.querySelector('[data-auth-link]');
+  if (!link) return;
+
+  fetch('/api/session', { headers: { Accept: 'application/json' }, credentials: 'same-origin' })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (data) {
+      if (data && data.authenticated) {
+        link.textContent = 'Profile';
+        link.setAttribute('href', '/dashboard');
+      }
+    })
+    .catch(function () { /* leave the default "Sign In" link in place */ });
 })();
 
 // ── SCROLL TO TOP ───────────────────────────

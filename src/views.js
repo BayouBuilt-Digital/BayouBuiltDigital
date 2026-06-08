@@ -95,27 +95,105 @@ export function signupPage({ error, values = {} } = {}) {
   );
 }
 
+/** Shared site nav. On the Profile page the auth link is already "Profile". */
+function siteNav() {
+  return html`
+  <nav>
+    <a href="/" class="nav-logo">BayouBuilt <span>Digital</span></a>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="/work">Our Work</a></li>
+      <li><a href="/products">Products</a></li>
+      <li><a href="/services">Services</a></li>
+      <li><a href="/about">About Us</a></li>
+      <li><a href="/contact">Contact</a></li>
+      <li><a href="/dashboard" class="nav-cta active" data-auth-link>Profile</a></li>
+    </ul>
+  </nav>`;
+}
+
+function siteFooter() {
+  return html`
+  <footer>
+    <div class="footer-inner">
+      <p class="footer-logo">BayouBuilt <span>Digital</span></p>
+      <nav class="footer-nav" aria-label="Footer">
+        <a href="/work">Our Work</a>
+        <a href="/products">Products</a>
+        <a href="/services">Services</a>
+        <a href="/about">About Us</a>
+        <a href="/contact">Contact</a>
+      </nav>
+      <p class="footer-copy">© 2026 D &amp; G Fuzion LLC DBA BayouBuilt Digital &nbsp;·&nbsp; Maurice, Louisiana</p>
+    </div>
+  </footer>`;
+}
+
+/** Full-chrome page (nav + footer), used for the logged-in Profile page. */
+function sitePage(title, body) {
+  return html`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>${title} | BayouBuilt Digital</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,700;1,800;1,900&family=Inter:wght@400;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <link rel="stylesheet" href="/auth.css" />
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+</head>
+<body>
+  <a href="#main-content" class="skip-nav">Skip to content</a>
+  ${siteNav()}
+  <main id="main-content">
+    ${body}
+  </main>
+  ${siteFooter()}
+  <script src="/main.js"></script>
+</body>
+</html>`;
+}
+
 export function dashboardPage({ user, customer } = {}) {
   const name = customer?.full_name || user?.email || 'there';
-  return layout(
-    'Dashboard',
+  return sitePage(
+    'Profile',
     html`
-    <section class="auth-card auth-card--wide">
-      <h1 class="auth-title">Hi, ${name}</h1>
-      <p class="auth-sub">You're signed in to BayouBuilt Digital.</p>
+    <header class="page-hero">
+      <div class="page-hero-inner">
+        <div class="section-label">Your Account</div>
+        <h1>Hi, <em>${name}</em></h1>
+        <p>Manage your account, purchases, and downloads here.</p>
+      </div>
+    </header>
 
-      <dl class="account-list">
-        <div><dt>Email</dt><dd>${user?.email ?? '—'}</dd></div>
-        <div><dt>Name</dt><dd>${customer?.full_name ?? '—'}</dd></div>
-        <div><dt>Business</dt><dd>${customer?.company ?? '—'}</dd></div>
-        <div><dt>Phone</dt><dd>${customer?.phone ?? '—'}</dd></div>
-      </dl>
+    <section class="section">
+      <div class="section-inner account-wrap">
+        <div class="auth-card auth-card--wide">
+          <h2 class="auth-title">Account details</h2>
+          <dl class="account-list">
+            <div><dt>Email</dt><dd>${user?.email ?? '—'}</dd></div>
+            <div><dt>Name</dt><dd>${customer?.full_name ?? '—'}</dd></div>
+            <div><dt>Business</dt><dd>${customer?.company ?? '—'}</dd></div>
+            <div><dt>Phone</dt><dd>${customer?.phone ?? '—'}</dd></div>
+          </dl>
+          <form method="post" action="/logout">
+            <button type="submit" class="btn btn--ghost btn--full">Sign Out</button>
+          </form>
+        </div>
 
-      <p class="auth-sub">Your purchases, downloads, and project portal will appear here soon.</p>
-
-      <form method="post" action="/logout">
-        <button type="submit" class="btn btn--ghost btn--full">Log Out</button>
-      </form>
+        <div class="auth-card auth-card--wide">
+          <h2 class="auth-title">Your items</h2>
+          <p class="auth-sub">You don't have any products or downloads yet. Browse the
+            <a href="/products">Products</a> page to get started — your purchases and
+            license downloads will show up here.</p>
+        </div>
+      </div>
     </section>`,
   );
 }
