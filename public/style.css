@@ -130,7 +130,10 @@ ul { list-style: none; }
 /* ============================================
    NAV
    ============================================ */
-nav {
+/* Scope to the top-level header nav only — must NOT match <nav> elements
+   elsewhere (e.g. the footer's <nav class="footer-nav">), which would
+   otherwise inherit fixed positioning and overlay the real navbar. */
+body > nav {
     position: fixed;
     top: 0;
     left: 0;
