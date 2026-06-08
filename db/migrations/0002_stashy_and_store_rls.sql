@@ -17,9 +17,9 @@ values (
 )
 on conflict (slug) do nothing;
 
--- One-time price: $12.00 USD (1200 cents). Edit unit_amount to change pricing.
+-- One-time price: $10.00 USD (1000 cents). Edit unit_amount to change pricing.
 insert into public.prices (product_id, unit_amount, currency, active)
-select p.id, 1200, 'usd', true
+select p.id, 1000, 'usd', true
 from public.products p
 where p.slug = 'stashy'
   and not exists (select 1 from public.prices pr where pr.product_id = p.id);
