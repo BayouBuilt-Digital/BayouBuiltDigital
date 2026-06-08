@@ -8,5 +8,15 @@ SUPABASE_URL=
 SUPABASE_ANON_KEY=
 
 # Service role key — SERVER ONLY. Bypasses Row Level Security. Never send to the
-# browser or commit it. Used for provisioning customer rows and (later) webhooks.
+# browser or commit it. Used for provisioning customer rows and webhook fulfillment.
 SUPABASE_SERVICE_ROLE_KEY=
+
+# ── Stripe (use TEST-mode keys: sk_test_... ) ──────────────────────────
+# Secret key — SERVER ONLY. Dashboard → Developers → API keys.
+STRIPE_SECRET_KEY=
+
+# Webhook signing secret. For local dev, run:
+#   stripe listen --forward-to localhost:8787/api/stripe/webhook
+# and copy the printed "whsec_..." value here. In production, use the secret
+# from the webhook endpoint you create in the Stripe dashboard.
+STRIPE_WEBHOOK_SECRET=

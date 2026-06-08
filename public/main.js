@@ -61,6 +61,19 @@
     .catch(function () { /* leave the default "Sign In" link in place */ });
 })();
 
+// ── PRODUCTS PAGE ALERT (from query string) ─
+(function () {
+  var el = document.getElementById('products-alert');
+  if (!el) return;
+  var params = new URLSearchParams(window.location.search);
+  var msg = '';
+  if (params.get('error')) msg = params.get('error');
+  else if (params.get('canceled')) msg = 'Checkout canceled — no charge was made.';
+  if (!msg) return;
+  el.textContent = msg;
+  el.hidden = false;
+})();
+
 // ── SCROLL TO TOP ───────────────────────────
 (function () {
   var btn = document.querySelector('.scroll-top');

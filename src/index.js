@@ -1,6 +1,13 @@
 import { Hono } from 'hono';
 import { getSupabase, ensureCustomer, getAdmin } from './supabase.js';
 import { loginPage, signupPage, dashboardPage } from './views.js';
+import { getStripe, constructWebhookEvent } from './stripe.js';
+import { getProductWithPrice, recordPurchase, listEntitlements } from './fulfillment.js';
+
+/** Only allow same-origin relative redirect targets (no protocol-relative). */
+function safeNext(n) {
+  return typeof n === 'string' && /^\/(?!\/)/.test(n) ? n : null;
+}
 
 const app = new Hono();
 
@@ -51,8 +58,9 @@ app.get('/api/session', async (c) => {
 
 // ── Auth pages (GET) ────────────────────────────────────────────────
 app.get('/login', async (c) => {
-  if (await currentUser(c)) return c.redirect('/dashboard');
-  return c.html(loginPage({ error: c.req.query('error'), msg: c.req.query('msg') }));
+  const next = safeNext(c.req.query('next'));
+  if (await currentUser(c)) return c.redirect(next ?? '/dashboard');
+  return c.html(loginPage({ error: c.req.query('error'), msg: c.req.query('msg'), next }));
 });
 
 app.get('/signup', async (c) => {
@@ -93,14 +101,16 @@ app.post('/api/auth/login', async (c) => {
   const body = await c.req.parseBody();
   const email = String(body.email ?? '').trim();
   const password = String(body.password ?? '');
+  const next = safeNext(body.next);
 
   const supabase = c.get('supabase');
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
   if (error || !data?.user) {
-    return c.redirect('/login?error=' + encodeURIComponent('Invalid email or password.'));
+    const q = next ? '&next=' + encodeURIComponent(next) : '';
+    return c.redirect('/login?error=' + encodeURIComponent('Invalid email or password.') + q);
   }
   await ensureCustomer(c, data.user); // idempotent safety net
-  return c.redirect('/dashboard');
+  return c.redirect(next ?? '/dashboard');
 });
 
 async function logout(c) {
@@ -116,11 +126,137 @@ app.get('/dashboard', requireAuth, async (c) => {
   const admin = getAdmin(c);
   const { data: customer } = await admin
     .from('customers')
-    .select('full_name, company, phone, email')
+    .select('id, full_name, company, phone, email')
     .eq('user_id', user.id)
     .maybeSingle();
-  return c.html(dashboardPage({ user, customer }));
+  const items = customer ? await listEntitlements(admin, customer.id) : [];
+  return c.html(
+    dashboardPage({ user, customer, items, purchaseSuccess: c.req.query('purchase') === 'success' }),
+  );
 });
+
+// ── Checkout (Stripe) ───────────────────────────────────────────────
+// Buying requires login. If signed out, bounce to /login and come back.
+app.post('/api/checkout', async (c) => {
+  const user = await currentUser(c);
+  if (!user) return c.redirect('/login?next=/products');
+
+  const body = await c.req.parseBody();
+  const slug = String(body.product ?? 'stashy').trim();
+  const admin = getAdmin(c);
+
+  const combo = await getProductWithPrice(admin, slug);
+  if (!combo) return c.redirect('/products?error=' + encodeURIComponent('That product is not available yet.'));
+  const { product, price } = combo;
+
+  // Make sure the customer row exists, then get its id.
+  let { data: customer } = await admin.from('customers').select('id').eq('user_id', user.id).maybeSingle();
+  if (!customer) {
+    await ensureCustomer(c, user);
+    ({ data: customer } = await admin.from('customers').select('id').eq('user_id', user.id).maybeSingle());
+  }
+  if (!customer) return c.redirect('/products?error=' + encodeURIComponent('Could not start checkout.'));
+
+  const origin = new URL(c.req.url).origin;
+  const stripe = getStripe(c);
+  try {
+    const session = await stripe.checkout.sessions.create({
+      mode: 'payment',
+      line_items: [
+        {
+          quantity: 1,
+          price_data: {
+            currency: price.currency,
+            unit_amount: price.unit_amount,
+            product_data: {
+              name: product.name,
+              ...(product.description ? { description: product.description } : {}),
+            },
+          },
+        },
+      ],
+      customer_email: user.email,
+      client_reference_id: customer.id,
+      success_url: origin + '/dashboard?purchase=success',
+      cancel_url: origin + '/products?canceled=1',
+      metadata: {
+        user_id: user.id,
+        customer_id: customer.id,
+        product_id: product.id,
+        price_id: price.id,
+        product_slug: product.slug,
+      },
+    });
+    return c.redirect(session.url, 303);
+  } catch (err) {
+    console.error('checkout session error:', err.message);
+    return c.redirect('/products?error=' + encodeURIComponent('Could not start checkout. Please try again.'));
+  }
+});
+
+// ── Stripe webhook ──────────────────────────────────────────────────
+// Public endpoint called by Stripe. Verifies the signature, then fulfills the
+// purchase in Supabase. Idempotent via the stripe_events table.
+app.post('/api/stripe/webhook', async (c) => {
+  const signature = c.req.header('stripe-signature');
+  const raw = await c.req.text();
+
+  let event;
+  try {
+    event = await constructWebhookEvent(c, raw, signature);
+  } catch (err) {
+    return c.text('Webhook signature verification failed: ' + err.message, 400);
+  }
+
+  const admin = getAdmin(c);
+
+  // Skip if we've already processed this event.
+  const { data: seen } = await admin.from('stripe_events').select('id').eq('id', event.id).maybeSingle();
+  if (seen) return c.json({ received: true, duplicate: true });
+
+  try {
+    if (event.type === 'checkout.session.completed') {
+      const session = event.data.object;
+      if (session.payment_status === 'paid' || session.status === 'complete') {
+        await fulfillCheckout(c, admin, session);
+      }
+    }
+  } catch (err) {
+    console.error('fulfillment error:', err.message);
+    // Don't mark processed — return 500 so Stripe retries.
+    return c.text('fulfillment error', 500);
+  }
+
+  // Mark processed only after successful handling.
+  await admin.from('stripe_events').insert({ id: event.id, type: event.type, payload: event });
+  return c.json({ received: true });
+});
+
+/** Turn a completed Checkout Session into order + entitlement rows. */
+async function fulfillCheckout(c, admin, session) {
+  const md = session.metadata || {};
+  const customerId = md.customer_id;
+  const { data: product } = await admin.from('products').select('*').eq('id', md.product_id).maybeSingle();
+  const { data: price } = await admin.from('prices').select('*').eq('id', md.price_id).maybeSingle();
+  if (!customerId || !product || !price) {
+    throw new Error('missing metadata/product/price for session ' + session.id);
+  }
+
+  // Best-effort receipt URL from the PaymentIntent's charge.
+  let receiptUrl = null;
+  try {
+    const piId =
+      typeof session.payment_intent === 'string' ? session.payment_intent : session.payment_intent?.id;
+    if (piId) {
+      const pi = await getStripe(c).paymentIntents.retrieve(piId, { expand: ['latest_charge'] });
+      receiptUrl = pi.latest_charge?.receipt_url ?? null;
+    }
+  } catch {
+    /* non-fatal */
+  }
+
+  await recordPurchase(admin, { session, product, price, customerId, receiptUrl });
+}
 
 // Lightweight JSON identity endpoint (handy for future client calls).
 app.get('/api/me', requireAuth, (c) => {

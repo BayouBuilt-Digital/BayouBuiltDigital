@@ -53,15 +53,32 @@
       </div>
     </header>
 
-    <!-- PRODUCTS -->
-    <!--
-      PLACEHOLDER CATALOG. These cards are illustrative until products are
-      loaded from Supabase (products / prices tables) and checkout is wired up
-      in the Stripe pass. Edit names/copy freely or replace with live data.
-    -->
+    <!-- ?canceled / ?error banners (shown via main.js from query string) -->
     <section class="section">
       <div class="section-inner">
+        <p class="products-alert" id="products-alert" role="status" hidden></p>
         <div class="product-grid">
+
+          <!-- Stashy — live, buyable product. Price shown here mirrors the
+               unit_amount seeded in the prices table (see db migration 0002). -->
+          <article class="product-card">
+            <div class="product-card-top">
+              <h2 class="product-name">Stashy</h2>
+              <span class="product-badge product-badge--paid">Pro</span>
+            </div>
+            <p class="product-desc">A local-first snippet manager — capture, organize, search, and reuse your code snippets, all stored on your own machine. Fast, private, no cloud lock-in.</p>
+            <ul class="product-features">
+              <li>Local-first — snippets stay on your device</li>
+              <li>Instant fuzzy search</li>
+              <li>Tags, folders &amp; syntax highlighting</li>
+              <li>Lifetime license</li>
+            </ul>
+            <div class="product-price">$12<span> / one-time</span></div>
+            <form method="post" action="/api/checkout">
+              <input type="hidden" name="product" value="stashy" />
+              <button type="submit" class="btn btn--full">Buy Stashy</button>
+            </form>
+          </article>
 
           <article class="product-card">
             <div class="product-card-top">
@@ -80,29 +97,14 @@
 
           <article class="product-card">
             <div class="product-card-top">
-              <h2 class="product-name">Booking Widget</h2>
-              <span class="product-badge product-badge--paid">Pro</span>
-            </div>
-            <p class="product-desc">A lightweight, embeddable appointment booker for service businesses — no monthly platform fees, drops into any site.</p>
-            <ul class="product-features">
-              <li>Embed on any website</li>
-              <li>Email confirmations &amp; reminders</li>
-              <li>Free tier: 1 calendar</li>
-            </ul>
-            <div class="product-price">$—<span> / one-time</span></div>
-            <button class="btn btn--full" type="button" disabled>Checkout coming soon</button>
-          </article>
-
-          <article class="product-card">
-            <div class="product-card-top">
-              <h2 class="product-name">Invoice Lite</h2>
+              <h2 class="product-name">More tools</h2>
               <span class="product-badge product-badge--soon">Coming Soon</span>
             </div>
-            <p class="product-desc">Simple invoicing for sole proprietors and small shops — create, send, and track invoices without a bloated subscription.</p>
+            <p class="product-desc">We're actively building more small-business software. Booking widgets, invoicing, and more are on the way — with free tiers wherever we can.</p>
             <ul class="product-features">
-              <li>Branded PDF invoices</li>
-              <li>Payment status tracking</li>
-              <li>Free tier planned</li>
+              <li>Built small-business-first</li>
+              <li>Free versions where possible</li>
+              <li>One account for everything</li>
             </ul>
             <div class="product-price">$—<span> / TBD</span></div>
             <button class="btn btn--full" type="button" disabled>In development</button>

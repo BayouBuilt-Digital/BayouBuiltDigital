@@ -35,7 +35,7 @@ function banner(error, msg) {
   return raw('');
 }
 
-export function loginPage({ error, msg } = {}) {
+export function loginPage({ error, msg, next } = {}) {
   return layout(
     'Log In',
     html`
@@ -44,6 +44,7 @@ export function loginPage({ error, msg } = {}) {
       <p class="auth-sub">Log in to your BayouBuilt Digital account.</p>
       ${banner(error, msg)}
       <form class="auth-form" method="post" action="/api/auth/login">
+        ${next ? html`<input type="hidden" name="next" value="${next}" />` : raw('')}
         <label class="auth-field">
           <span>Email</span>
           <input type="email" name="email" autocomplete="email" required />
@@ -159,8 +160,25 @@ function sitePage(title, body) {
 </html>`;
 }
 
-export function dashboardPage({ user, customer } = {}) {
+export function dashboardPage({ user, customer, items = [], purchaseSuccess = false } = {}) {
   const name = customer?.full_name || user?.email || 'there';
+
+  const itemsBody = items.length
+    ? html`<div class="owned-grid">
+        ${items.map(
+          (e) => html`
+          <div class="owned-card">
+            <h3 class="owned-name">${e.products?.name ?? 'Product'}</h3>
+            ${e.products?.description ? html`<p class="owned-desc">${e.products.description}</p>` : raw('')}
+            <span class="owned-tag">Owned</span>
+            <button type="button" class="btn btn--ghost btn--full" disabled>Download (coming soon)</button>
+          </div>`,
+        )}
+      </div>`
+    : html`<p class="auth-sub">You don't own any products yet. Browse the
+        <a href="/products">Products</a> page to get started — your purchases and
+        license downloads will show up here.</p>`;
+
   return sitePage(
     'Profile',
     html`
@@ -174,6 +192,15 @@ export function dashboardPage({ user, customer } = {}) {
 
     <section class="section">
       <div class="section-inner account-wrap">
+        ${purchaseSuccess
+          ? html`<p class="auth-alert auth-alert--ok" role="status">Payment received — thanks! Your purchase is now in your account below.</p>`
+          : raw('')}
+
+        <div class="auth-card auth-card--wide">
+          <h2 class="auth-title">Your products</h2>
+          ${itemsBody}
+        </div>
+
         <div class="auth-card auth-card--wide">
           <h2 class="auth-title">Account details</h2>
           <dl class="account-list">
@@ -185,13 +212,6 @@ export function dashboardPage({ user, customer } = {}) {
           <form method="post" action="/logout">
             <button type="submit" class="btn btn--ghost btn--full">Sign Out</button>
           </form>
-        </div>
-
-        <div class="auth-card auth-card--wide">
-          <h2 class="auth-title">Your items</h2>
-          <p class="auth-sub">You don't have any products or downloads yet. Browse the
-            <a href="/products">Products</a> page to get started — your purchases and
-            license downloads will show up here.</p>
         </div>
       </div>
     </section>`,

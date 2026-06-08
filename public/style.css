@@ -2192,3 +2192,16 @@ footer {
     .section { padding: 4rem 1.5rem; }
     .cta-band { padding: 4rem 1.5rem; }
 }
+
+/* Products page alert (checkout canceled / errors) */
+.products-alert {
+    max-width: 700px;
+    margin: 0 auto 2rem;
+    text-align: center;
+    background: rgba(201, 149, 42, 0.12);
+    border: 1px solid rgba(201, 149, 42, 0.35);
+    color: var(--gold);
+    border-radius: 8px;
+    padding: 0.85rem 1rem;
+    font-size: 0.9rem;
+}
