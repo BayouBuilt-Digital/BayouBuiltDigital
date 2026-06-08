@@ -1,0 +1,24 @@
+{
+  "name": "bayoubuilt-digital",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "BayouBuilt Digital — marketing site + customer portal (software sales & local-business services).",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "build": "wrangler deploy --dry-run --outdir=dist"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.10.3",
+    "@supabase/supabase-js": "^2.108.0",
+    "hono": "^4.12.24",
+    "stripe": "^22.2.0"
+  },
+  "devDependencies": {
+    "wrangler": "^4.98.0"
+  }
+}

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Products | Software for Small Business | BayouBuilt Digital</title>
+  <meta name="description" content="Practical software built for small businesses by BayouBuilt Digital — with free versions to get you started." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://bayoubuilt-digital.com/products" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none';" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://bayoubuilt-digital.com/products" />
+  <meta property="og:site_name" content="BayouBuilt Digital" />
+  <meta property="og:title" content="Products | BayouBuilt Digital" />
+  <meta property="og:description" content="Software built for small businesses — with free versions." />
+  <meta property="og:image" content="https://bayoubuilt-digital.com/assets/og-preview.png" />
+  <meta name="theme-color" content="#050c08" />
+  <link rel="apple-touch-icon" href="assets/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,700;1,800;1,900&family=Inter:wght@400;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+</head>
+<body>
+
+  <a href="#main-content" class="skip-nav">Skip to content</a>
+
+  <!-- NAV -->
+  <nav>
+    <a href="/" class="nav-logo">BayouBuilt <span>Digital</span></a>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="/work">Our Work</a></li>
+      <li><a href="/products">Products</a></li>
+      <li><a href="/services">Services</a></li>
+      <li><a href="/about">About Us</a></li>
+      <li><a href="/contact">Contact</a></li>
+      <li><a href="/login" class="nav-cta" data-auth-link>Sign In</a></li>
+    </ul>
+  </nav>
+
+  <main id="main-content">
+
+    <!-- PAGE HERO -->
+    <header class="page-hero">
+      <div class="page-hero-inner">
+        <div class="section-label">Products</div>
+        <h1>Software, <em>built small-business-first.</em></h1>
+        <p>Practical tools we build and sell — each with a free version so you can try before you buy. Create a free account to download and manage your licenses.</p>
+      </div>
+    </header>
+
+    <!-- ?canceled / ?error banners (shown via main.js from query string) -->
+    <section class="section">
+      <div class="section-inner">
+        <p class="products-alert" id="products-alert" role="status" hidden></p>
+        <div class="product-grid">
+
+          <!-- Stashy — live, buyable product. Price shown here mirrors the
+               unit_amount seeded in the prices table (see db migration 0002). -->
+          <article class="product-card">
+            <div class="product-card-top">
+              <h2 class="product-name">Stashy</h2>
+              <span class="product-badge product-badge--paid">Pro</span>
+            </div>
+            <p class="product-desc">A local-first snippet manager — capture, organize, search, and reuse your code snippets, all stored on your own machine. Fast, private, no cloud lock-in.</p>
+            <ul class="product-features">
+              <li>Local-first — snippets stay on your device</li>
+              <li>Instant fuzzy search</li>
+              <li>Tags, folders &amp; syntax highlighting</li>
+              <li>Lifetime license</li>
+            </ul>
+            <div class="product-price">$10<span> / one-time</span></div>
+            <form method="post" action="/api/checkout">
+              <input type="hidden" name="product" value="stashy" />
+              <button type="submit" class="btn btn--full">Buy Stashy</button>
+            </form>
+          </article>
+
+          <article class="product-card">
+            <div class="product-card-top">
+              <h2 class="product-name">Local SEO Checklist</h2>
+              <span class="product-badge product-badge--free">Free</span>
+            </div>
+            <p class="product-desc">A guided tool that audits the basics every local business needs to show up on Google — titles, schema, reviews, and Maps presence.</p>
+            <ul class="product-features">
+              <li>Step-by-step local SEO audit</li>
+              <li>Printable action report</li>
+              <li>No credit card required</li>
+            </ul>
+            <div class="product-price">Free</div>
+            <a href="/signup" class="btn btn--full">Create Free Account</a>
+          </article>
+
+          <article class="product-card">
+            <div class="product-card-top">
+              <h2 class="product-name">More tools</h2>
+              <span class="product-badge product-badge--soon">Coming Soon</span>
+            </div>
+            <p class="product-desc">We're actively building more small-business software. Booking widgets, invoicing, and more are on the way — with free tiers wherever we can.</p>
+            <ul class="product-features">
+              <li>Built small-business-first</li>
+              <li>Free versions where possible</li>
+              <li>One account for everything</li>
+            </ul>
+            <div class="product-price">$—<span> / TBD</span></div>
+            <button class="btn btn--full" type="button" disabled>In development</button>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-band">
+      <h2>Need something <em>custom built?</em></h2>
+      <a href="/contact" class="btn">Tell Us What You Need</a>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <p class="footer-logo">BayouBuilt <span>Digital</span></p>
+      <nav class="footer-nav" aria-label="Footer">
+        <a href="/work">Our Work</a>
+        <a href="/products">Products</a>
+        <a href="/services">Services</a>
+        <a href="/about">About Us</a>
+        <a href="/contact">Contact</a>
+      </nav>
+      <p class="footer-copy">© 2026 D &amp; G Fuzion LLC DBA BayouBuilt Digital &nbsp;·&nbsp; Maurice, Louisiana</p>
+    </div>
+  </footer>
+
+  <button class="scroll-top" aria-label="Scroll to top" title="Back to top">&#8593;</button>
+
+  <script src="main.js"></script>
+</body>
+</html>

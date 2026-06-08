@@ -2,3 +2,12 @@
 .env
 .env.local
 .env*.local
+
+# Cloudflare Workers local secrets (Supabase keys, etc.)
+.dev.vars
+.dev.vars.local
+
+# Dependencies & build output
+node_modules/
+dist/
+.wrangler/

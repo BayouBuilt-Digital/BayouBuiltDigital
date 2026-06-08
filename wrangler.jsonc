@@ -1,0 +1,32 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "bayoubuilt-digital",
+  "main": "src/index.js",
+  "compatibility_date": "2026-06-08",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // Static marketing site (index.html, /assets, /pages, etc.) is served directly
+  // from ./public. The Worker only runs first for the dynamic app routes below;
+  // everything else falls through to the static assets.
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "html_handling": "auto-trailing-slash",
+    "run_worker_first": [
+      "/api/*",
+      "/login",
+      "/signup",
+      "/logout",
+      "/dashboard",
+      "/dashboard/*"
+    ]
+  },
+
+  "observability": { "enabled": true }
+
+  // Secrets (NOT stored here) — set locally in .dev.vars and in production with
+  // `wrangler secret put <NAME>`:
+  //   SUPABASE_URL
+  //   SUPABASE_ANON_KEY            (publishable key)
+  //   SUPABASE_SERVICE_ROLE_KEY    (server-only; bypasses RLS — never expose)
+}

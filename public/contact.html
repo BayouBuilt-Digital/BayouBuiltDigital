@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact | BayouBuilt Digital</title>
+  <meta name="description" content="Contact BayouBuilt Digital — tell us about your project and we'll put together a custom proposal. Maurice, Louisiana." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://bayoubuilt-digital.com/contact" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none';" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://bayoubuilt-digital.com/contact" />
+  <meta property="og:site_name" content="BayouBuilt Digital" />
+  <meta property="og:title" content="Contact | BayouBuilt Digital" />
+  <meta property="og:description" content="Tell us about your project — no pressure, no obligation." />
+  <meta property="og:image" content="https://bayoubuilt-digital.com/assets/og-preview.png" />
+  <meta name="theme-color" content="#050c08" />
+  <link rel="apple-touch-icon" href="assets/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,700;1,800;1,900&family=Inter:wght@400;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+</head>
+<body>
+
+  <a href="#main-content" class="skip-nav">Skip to content</a>
+
+  <!-- NAV -->
+  <nav>
+    <a href="/" class="nav-logo">BayouBuilt <span>Digital</span></a>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="/work">Our Work</a></li>
+      <li><a href="/products">Products</a></li>
+      <li><a href="/services">Services</a></li>
+      <li><a href="/about">About Us</a></li>
+      <li><a href="/contact">Contact</a></li>
+      <li><a href="/login" class="nav-cta" data-auth-link>Sign In</a></li>
+    </ul>
+  </nav>
+
+  <main id="main-content">
+
+    <!-- PAGE HERO -->
+    <header class="page-hero">
+      <div class="page-hero-inner">
+        <div class="section-label">Let's Talk</div>
+        <h1>Your next customer is <em>already searching.</em></h1>
+        <p>Every project is scoped to fit your business. Tell us what you need and we'll put together a custom proposal — no pressure, no obligation.</p>
+      </div>
+    </header>
+
+    <!-- CONTACT -->
+    <section class="contact-bg">
+      <div class="contact-inner">
+        <p class="contact-direct">Prefer email? Reach us directly at <a href="mailto:contact@bayoubuilt-digital.com">contact@bayoubuilt-digital.com</a></p>
+        <div class="contact-availability">Now booking new projects</div>
+        <form class="contact-form" id="contact-form" novalidate>
+
+          <!-- Web3Forms: delivers to contact@bayoubuilt-digital.com.
+               access_key is publishable by design (only allows submitting to the
+               associated mailbox). Manage at web3forms.com. -->
+          <input type="hidden" name="access_key" value="7fcfd404-1f2e-4786-8f2a-20367715bf06" />
+          <input type="hidden" name="subject" value="New Project Inquiry — BayouBuilt Digital website" />
+          <input type="hidden" name="from_name" value="BayouBuilt Digital Website" />
+          <!-- Honeypot spam trap (must stay empty) -->
+          <input type="checkbox" name="botcheck" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+          <div class="form-row">
+            <div class="form-field">
+              <label class="form-label" for="cf-name">Your Name</label>
+              <input class="form-input" type="text" id="cf-name" name="name" required maxlength="100" autocomplete="name" />
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="cf-business">Business Name</label>
+              <input class="form-input" type="text" id="cf-business" name="business" required maxlength="120" autocomplete="organization" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label class="form-label" for="cf-phone">Phone Number</label>
+              <input class="form-input" type="tel" id="cf-phone" name="phone" required maxlength="20" autocomplete="tel" />
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="cf-email">Email Address</label>
+              <input class="form-input" type="email" id="cf-email" name="email" required maxlength="254" autocomplete="email" />
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" for="cf-message">Tell Us About Your Project</label>
+            <textarea class="form-input form-textarea" id="cf-message" name="message" rows="5" maxlength="2000" placeholder="What kind of business do you have? What does your current online presence look like? What do you need?" required></textarea>
+          </div>
+
+          <button type="submit" id="contact-submit-btn" class="btn btn--full">Get My Free Consultation</button>
+          <p class="form-status" id="form-status" role="status" aria-live="polite" hidden></p>
+          <p class="form-trust">We respond within one business day. Your information stays private.</p>
+
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <p class="footer-logo">BayouBuilt <span>Digital</span></p>
+      <nav class="footer-nav" aria-label="Footer">
+        <a href="/work">Our Work</a>
+        <a href="/products">Products</a>
+        <a href="/services">Services</a>
+        <a href="/about">About Us</a>
+        <a href="/contact">Contact</a>
+      </nav>
+      <p class="footer-copy">© 2026 D &amp; G Fuzion LLC DBA BayouBuilt Digital &nbsp;·&nbsp; Maurice, Louisiana</p>
+    </div>
+  </footer>
+
+  <button class="scroll-top" aria-label="Scroll to top" title="Back to top">&#8593;</button>
+
+  <script src="main.js"></script>
+</body>
+</html>
