@@ -1,0 +1,12 @@
+# Copy this file to `.dev.vars` (gitignored) and fill in your Supabase project values.
+# Find these in the Supabase dashboard → Project Settings → API.
+
+# Project URL, e.g. https://abcdefghijklmno.supabase.co
+SUPABASE_URL=
+
+# Publishable / anon key (safe to use from the server with RLS enforced).
+SUPABASE_ANON_KEY=
+
+# Service role key — SERVER ONLY. Bypasses Row Level Security. Never send to the
+# browser or commit it. Used for provisioning customer rows and (later) webhooks.
+SUPABASE_SERVICE_ROLE_KEY=
