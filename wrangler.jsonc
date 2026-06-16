@@ -18,7 +18,8 @@
       "/signup",
       "/logout",
       "/dashboard",
-      "/dashboard/*"
+      "/dashboard/*",
+      "/account/*"
     ]
   },
 

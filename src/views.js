@@ -213,6 +213,50 @@ export function dashboardPage({ user, customer, items = [], purchaseSuccess = fa
             <button type="submit" class="btn btn--ghost btn--full">Sign Out</button>
           </form>
         </div>
+
+        <div class="auth-card auth-card--wide danger-card">
+          <h2 class="auth-title">Danger zone</h2>
+          <p class="auth-sub">Deleting your account permanently removes your login, profile,
+            and purchase history. This can't be undone.</p>
+          <a href="/account/delete" class="btn btn--danger btn--full">Delete Account</a>
+        </div>
+      </div>
+    </section>`,
+  );
+}
+
+export function deleteAccountPage({ email } = {}) {
+  return sitePage(
+    'Delete Account',
+    html`
+    <header class="page-hero">
+      <div class="page-hero-inner">
+        <div class="section-label">Danger Zone</div>
+        <h1>Delete your <em>account?</em></h1>
+        <p>This permanently deletes the account for ${email ?? 'you'}.</p>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="section-inner account-wrap">
+        <div class="auth-card auth-card--wide danger-card">
+          <h2 class="auth-title">This cannot be undone</h2>
+          <p class="auth-sub">Deleting your account will permanently remove:</p>
+          <ul class="danger-list">
+            <li>Your login and password</li>
+            <li>Your profile details</li>
+            <li>Your orders, purchases, and product access</li>
+          </ul>
+          <p class="auth-sub">You'll be signed out immediately and won't be able to recover this account.</p>
+
+          <form method="post" action="/api/account/delete">
+            <button type="submit" class="btn btn--danger btn--full"
+              data-confirm="Permanently delete your account? This cannot be undone.">
+              Yes, permanently delete my account
+            </button>
+          </form>
+          <a href="/dashboard" class="btn btn--ghost btn--full danger-cancel">Cancel</a>
+        </div>
       </div>
     </section>`,
   );

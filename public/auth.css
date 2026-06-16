@@ -161,3 +161,32 @@
   border-radius: 999px;
   padding: 0.25rem 0.6rem;
 }
+
+/* Danger zone (account deletion) */
+.danger-card { border-color: rgba(220, 70, 70, 0.4); }
+.danger-list {
+  list-style: none;
+  margin: 0.5rem 0 1.25rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.danger-list li {
+  color: var(--muted, rgba(240, 237, 230, 0.72));
+  font-size: 0.9rem;
+  padding-left: 1.3rem;
+  position: relative;
+}
+.danger-list li::before { content: '\2717'; position: absolute; left: 0; color: #ff6b6b; font-weight: 700; }
+.btn--danger {
+  background: #c0392b;
+  border-color: #c0392b;
+  color: #fff;
+}
+.btn--danger:hover {
+  background: transparent;
+  color: #ff8a7a;
+  border-color: #ff8a7a;
+}
+.danger-cancel { margin-top: 0.75rem; }

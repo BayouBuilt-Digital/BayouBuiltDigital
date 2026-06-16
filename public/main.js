@@ -61,6 +61,19 @@
     .catch(function () { /* leave the default "Sign In" link in place */ });
 })();
 
+// ── CONFIRM GUARD (data-confirm on a submit button) ─
+// Any <button data-confirm="message"> asks for confirmation before its form
+// submits. Used for destructive actions like account deletion.
+(function () {
+  document.querySelectorAll('[data-confirm]').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      if (!window.confirm(btn.getAttribute('data-confirm'))) {
+        e.preventDefault();
+      }
+    });
+  });
+})();
+
 // ── PRODUCTS PAGE ALERT (from query string) ─
 (function () {
   var el = document.getElementById('products-alert');

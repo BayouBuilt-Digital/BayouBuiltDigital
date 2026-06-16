@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import { getSupabase, ensureCustomer, getAdmin } from './supabase.js';
-import { loginPage, signupPage, dashboardPage } from './views.js';
+import { loginPage, signupPage, dashboardPage, deleteAccountPage } from './views.js';
 import { getStripe, constructWebhookEvent } from './stripe.js';
 import { getProductWithPrice, recordPurchase, listEntitlements } from './fulfillment.js';
 
@@ -262,6 +262,28 @@ async function fulfillCheckout(c, admin, session) {
 app.get('/api/me', requireAuth, (c) => {
   const user = c.get('user');
   return c.json({ id: user.id, email: user.email });
+});
+
+// ── Account deletion ────────────────────────────────────────────────
+app.get('/account/delete', requireAuth, (c) => {
+  return c.html(deleteAccountPage({ email: c.get('user').email }));
+});
+
+app.post('/api/account/delete', requireAuth, async (c) => {
+  const user = c.get('user');
+  const admin = getAdmin(c);
+
+  // Hard-delete the auth user. FK cascades remove the customer row and all
+  // dependent data (orders, order_items, entitlements, subscriptions, invoices).
+  const { error } = await admin.auth.admin.deleteUser(user.id);
+  if (error) {
+    console.error('deleteUser failed:', error.message);
+    return c.redirect('/dashboard?error=' + encodeURIComponent('Could not delete your account. Please try again.'));
+  }
+
+  // Clear the session cookies for the now-deleted user.
+  await c.get('supabase').auth.signOut().catch(() => {});
+  return c.redirect('/login?msg=' + encodeURIComponent('Your account has been permanently deleted.'));
 });
 
 app.notFound((c) => c.text('Not found', 404));
